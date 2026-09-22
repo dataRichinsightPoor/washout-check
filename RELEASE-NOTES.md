@@ -22,6 +22,8 @@ Washout Check makes the assumptions before and after a wash inspectable. It is a
 - **Reproducibility:** JSON import/export with recalculation, CSV trajectories, parameter-bearing PNG figures, scenario URLs, and synthetic worked examples.
 - **Verification:** 68 numerical and serialization tests, worker consistency checks, and test-gated GitHub Pages deployment.
 
+The initial [numerical-validation workflow](https://github.com/dataRichinsightPoor/washout-check/actions/runs/35679020574) and [public-demo deployment](https://github.com/dataRichinsightPoor/washout-check/actions/runs/35679020597) passed. The live-host controls, scenario roundtrip, exports, mobile layout, and numerical scope are documented in the [verification record](https://github.com/dataRichinsightPoor/washout-check/blob/v0.1.2-alpha/VERIFICATION.md).
+
 The software version remains v0.1.2-alpha after private development. Public availability is not a promotion to a stable or experimentally validated model.
 
 ## Start with the finite-dose challenge
