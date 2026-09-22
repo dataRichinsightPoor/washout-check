@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Washout Check | No. 03 | Data-Rich, Insight-Poor</title>
+<meta name="description" content="Did washing end exposure, or only remove the medium? A mass-balanced, reproducible washout audit for reversible binding, rebinding and retention.">
+<meta property="og:title" content="Washout Check: the drug may not have read the protocol.">
+<meta property="og:description" content="99 Small Problems, No. 03. Explore residual exposure, rebinding and reversible retention.">
+<link rel="preconnect" href="https://api.fontshare.com">
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css"><script type="module" src="app.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to model</a>
+<header class="masthead">
+<a class="brand" href="index.html" aria-label="Data-Rich, Insight-Poor, Washout Check home"><svg viewBox="0 0 32 32" width="32" height="32" role="img" aria-label="Data-Rich, Insight-Poor mark"><path d="M4 4v24h24M10 21l6-10 5 5 7-12" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="16" cy="11" r="3" fill="currentColor"/></svg><span>DATA-RICH, INSIGHT-POOR<small>EXECUTABLE BIOLOGY</small></span></a>
+<nav aria-label="Resources"><a href="methods.html">The math</a><a href="https://github.com/dataRichinsightPoor/washout-check">Code &amp; examples</a><button id="theme" type="button">Light mode</button></nav>
+</header>
+<main id="main">
+<section class="intro">
+<div><p class="eyebrow">99 SMALL PROBLEMS <span>/</span> NO. 03</p><h1>Washout Check</h1>
+<p class="question">Did the drug leave, or did the protocol merely stop adding it?</p>
+<p class="tagline">Useful models for assumptions with expensive ambitions.</p></div>
+<aside class="scope"><span class="badge">RESEARCH-USE ALPHA · v0.1.2-alpha</span><p>Reversible binding. Finite-dose loading.<br>Four explanations, one intrinsic off-rate.</p><a href="methods.html#limits">What this model cannot tell you ↗</a></aside>
+</section>
+<section class="toolbar" aria-label="Worked examples">
+<label for="preset">Start with a synthetic case</label>
+<select id="preset"><option value="retention">The medium is gone. The reservoir is not.</option><option value="dose">One dose. Two competing destinations.</option><option value="finite">One hour: the target is ready. The reservoir is not.</option><option value="residual">Five percent left is not five percent occupancy.</option><option value="rebinding">A complete wash is not a perfect sink.</option><option value="sinklike">When washout approaches the textbook.</option><option value="repeated">Ask the system again: repeated washes.</option></select>
+<button id="load">Load case</button><button id="reset">Reset</button>
+</section>
+<div class="workspace">
+<form id="controls" novalidate>
+<fieldset><legend>Binding &amp; loading</legend><p class="hint">Choose the boundary condition: a maintained free concentration or a limited drug supply.</p>
+<label for="loadingMode">Loading condition</label><select id="loadingMode"><option value="equilibrium">Assumed prewash equilibrium</option><option value="finite-clamped">Finite loading · clamped free drug</option><option value="finite-dose">Finite dose · closed loading</option></select>
+<div id="loading-duration-wrap" hidden><label for="loadingDuration">Loading duration <span>h</span></label><input id="loadingDuration" type="number" min="0" max="1000000" step="any" value="1"><p class="hint" id="loading-help">Initially empty sites and reservoir. Clamped loading is replenished; finite-dose loading is not.</p></div>
+<div id="dose-wrap" hidden><label for="dose">Initial total dose <span>nM-equivalent</span></label><input id="dose" type="number" min="0" max="1000" step="any" value="1"><p class="hint">Initially all free. Binding and retention share this fixed inventory. Concentration-equivalent = amount added ÷ fixed assay volume.</p></div>
+<div id="free-wrap"><label for="free0">Prewash free drug <span>nM</span></label><input id="free0" type="number" min="0" max="1000" step="any" value="10"></div>
+<div class="pair"><div><label for="kd">K<sub>D</sub> <span>nM</span></label><input id="kd" type="number" min=".001" max="1000" step="any" value="1"></div><div><label for="koff">k<sub>off</sub> <span>h⁻¹</span></label><input id="koff" type="number" min=".001" max="20" step="any" value="1"></div></div>
+<label for="receptor">Accessible target capacity <span>nM</span></label><input id="receptor" type="number" min=".0001" max="100" step="any" value=".2">
+<p class="hint">Capacity = moles of accessible sites ÷ assay volume. k<sub>on</sub> = k<sub>off</sub>/K<sub>D</sub>.</p></fieldset>
+<fieldset><legend>Wash protocol</legend>
+<div class="pair"><div><label for="residual">Medium remaining <span>% / wash</span></label><input id="residual" type="number" min="0" max="100" step="any" value="1"></div><div><label for="duration">Follow-up <span>h</span></label><input id="duration" type="number" min=".1" max="168" step="any" value="24"></div></div>
+<label for="washes">Wash times <span>h, comma-separated</span></label><input id="washes" type="text" value="0" spellcheck="false" aria-describedby="wash-help">
+<p class="hint" id="wash-help">Start at 0. Volume is restored after each instantaneous wash; bound and retained drug are not washed away.</p></fieldset>
+<details open><summary>Optional retention mechanism</summary><div class="detail-body">
+<label for="partition">Reservoir / free inventory at equilibrium <span>Q</span></label><input id="partition" type="number" min="0" max="100" step="any" value="5">
+<label for="release">Reservoir release rate <span>h⁻¹</span></label><input id="release" type="number" min=".001" max="20" step="any" value=".15">
+<p class="hint">A generic reversible pool, not a fitted membrane or organelle. Q = 0 disables it; entry rate = Q × release rate.</p></div></details>
+<button class="primary" type="submit" id="run">Run washout audit</button>
+<p id="status" role="status" aria-live="polite">Preparing model…</p>
+</form>
+<section class="results" aria-label="Model results">
+<div class="result-heading"><div><p class="eyebrow">THE ASSUMPTION UNDER TEST</p><h2>Removing medium is not removing exposure.</h2></div><span class="badge">SYNTHETIC · NOT A FIT</span></div>
+<div class="metrics" id="metrics" aria-live="polite"></div>
+<div class="plot-panel">
+<div class="plot-controls"><label for="view">Inspect <select id="view"><option value="occupancy">Target occupancy</option><option value="comparison">Loading assumption comparison</option><option value="loading" disabled>Before the wash · dose inventory</option><option value="loadingOccupancy" disabled>Before the wash · target occupancy</option><option value="free">Free drug</option><option value="inventory">Retention-case mass balance</option></select></label><button id="png" class="export">Export figure</button></div>
+<div id="comparison-choice" hidden><label for="compareMode">Mechanism to inspect</label><select id="compareMode"><option value="retention">Residual + retention</option><option value="residual">Residual medium</option><option value="complete">Complete exchange</option><option value="sink">Ideal sink</option></select>
+<div id="reference-wrap" hidden><label for="reference">Reference condition</label><select id="reference"><option value="equilibrium">Equilibrium · same total dose</option><option value="clamped">Clamped bath · same time, more drug</option></select></div></div>
+<canvas id="plot" width="1400" height="700" role="img" aria-label="Simulated washout trajectories; exact values available in the inspection table below."></canvas>
+<div id="legend" class="legend"></div><p id="plot-note" class="hint"></p>
+<label class="scrub" for="inspect">Inspect time <output id="time-label">0 h</output></label><input id="inspect" type="range" min="0" max="400" value="100" step="1">
+<div class="table-wrap"><table><caption id="inspection-caption">Values after any wash at the selected time</caption><thead><tr><th scope="col">Mechanism</th><th scope="col">Occupancy</th><th scope="col">Free (nM)</th><th scope="col">Free AUC (nM·h)</th></tr></thead><tbody id="inspection"></tbody></table></div>
+</div>
+<section class="loading-audit" aria-label="Loading assumption audit">
+<p class="eyebrow">THE LOADING ASSUMPTION AUDIT</p><h2 id="loading-title">Binding can be ready before the reservoir.</h2>
+<p id="loading-context"></p><div id="loading-readiness" class="readiness"></div>
+<div class="table-wrap"><table><caption id="loading-caption">Selected mechanism: initial inventory and washout consequence</caption><thead><tr><th scope="col">Quantity</th><th scope="col">Selected loading</th><th scope="col" id="reference-heading">Equilibrium reference</th></tr></thead><tbody id="loading-comparison"></tbody></table></div>
+<p id="loading-consequence"></p><p class="hint" id="clock-note">95% is a mathematical filling reference, not an experimentally validated acceptance threshold. Postwash AUC begins at the first wash.</p>
+</section>
+<div class="interpretation"><h2>What changed? Not the off-rate.</h2><p id="interpretation"></p><p>The useful next experiment is a perturbation, not a more confident adjective: change wash timing, residual volume, or accessible target capacity, then ask which explanation survives.</p></div>
+<div class="exports"><button id="json" class="export">Export run JSON</button><button id="csv" class="export">Export all curves CSV</button><button id="share" class="export">Create scenario link</button><label class="file-button" for="import">Import run JSON<input id="import" type="file" accept=".json,application/json"></label></div>
+<div id="share-box" hidden><label for="share-url">Scenario URL (parameters only; no experimental data)</label><input id="share-url" readonly><p class="hint">Copy this address from the public demo. The URL contains your input parameters; do not include confidential values.</p></div>
+<p id="diagnostics" class="hint"></p>
+</section></div>
+<section class="mechanism">
+<div><p class="eyebrow">FOLLOW THE INVENTORY</p><h2>The wash touches only one pool.</h2><p>All quantities are expressed per the same assay volume. An apparent concentration in the retention pool is an inventory unit, not an intracellular concentration.</p></div>
+<div class="flow" role="img" aria-label="Bound drug exchanges reversibly with free drug, which exchanges reversibly with a retained pool. Only free drug is removed by washing."><div class="pool">BOUND<small>B · finite target capacity</small></div><span aria-hidden="true">⇄</span><div class="pool free">FREE<small>F · extracellular medium</small><div class="drain">↓ wash → removed W</div></div><span aria-hidden="true">⇄</span><div class="pool">RETAINED<small>S · reversible inventory</small></div></div>
+</section>
+<section class="limits"><h2>A persistence audit, not a residence-time assay.</h2><p>These are competing synthetic scenarios, not parameter estimates. The model contains no receptor turnover, trafficking, spatial diffusion, covalent binding, active transport, metabolism, or downstream pharmacodynamics. Occupancy is not functional recovery. Fixed-free comparisons can contain different total drug inventories; finite-dose comparisons conserve the same starting dose but allow prewash occupancy to differ.</p><p>Rebinding and reversible partitioning complicate kinetic interpretation, as discussed by <a target="_blank" rel="noopener noreferrer" href="https://pubs.rsc.org/en/content/articlelanding/2012/md/c2md20015e">Vauquelin (2012)</a>. The mass-balance and equilibrium-binding foundations are discussed by <a target="_blank" rel="noopener noreferrer" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3000649/">Hulme &amp; Trevethick (2010)</a>. This implementation is an original, deliberately simplified teaching and experimental-design model, not a reproduction of either paper.</p><a href="methods.html">Read the equations, assumptions &amp; numerical methods ↗</a><br><a href="https://github.com/dataRichinsightPoor/washout-check/releases/tag/v0.1.2-alpha">Versioned source and release notes ↗</a></section>
+</main>
+<footer><span>Data-Rich, Insight-Poor · 99 Small Problems · No. 03</span><span>Local computation · <a href="LICENSE.txt">MIT license</a> · Research exploration only</span></footer>
+</body></html>

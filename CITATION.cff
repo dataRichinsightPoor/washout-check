@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use this software, cite its version and the specific model assumptions. Numerical verification is not biological validation."
+title: "Washout Check"
+type: software
+version: 0.1.2-alpha
+license: MIT
+repository-code: "https://github.com/dataRichinsightPoor/washout-check"
+url: "https://datarichinsightpoor.github.io/washout-check/"
+authors:
+  - name: "Data-Rich, Insight-Poor"
+abstract: "A research-use forward model of reversible target binding, explicit loading boundaries, medium exchange, residual exposure, and reversible drug retention. Synthetic scenarios expose assay-dependent persistence without estimating intrinsic residence time or therapeutic efficacy."

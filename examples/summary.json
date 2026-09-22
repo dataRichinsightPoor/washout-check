@@ -1,0 +1,70 @@
+{
+  "status": "Synthetic model calculations; not experimental measurements or efficacy predictions.",
+  "loading": {
+    "mode": "finite-dose",
+    "dose": 1,
+    "duration": 8
+  },
+  "followUp_h": 24,
+  "totalProtocol_h": 32,
+  "note": "Occupancy is a fraction, not percent. Add phase integrals, not their zero-based time axes.",
+  "comparisons": [
+    {
+      "case": "article-finite-dose",
+      "mechanism": "residual",
+      "retentionRatio": 0,
+      "prewashOccupancy": 0.47506214230680466,
+      "postwash24hOccupancy": 0.0807998411622398,
+      "loadingFreeAuc_nMh": 7.28608770459761,
+      "postwashFreeAuc_nMh": 2.0456470160798776,
+      "wholeProtocolFreeAuc_nMh": 9.331734720677488,
+      "loadingOccupancyAuc_h": 3.569561477011966,
+      "postwashOccupancyAuc_h": 2.2592414208102896,
+      "wholeProtocolOccupancyAuc_h": 5.828802897822255
+    },
+    {
+      "case": "article-finite-dose",
+      "mechanism": "retention",
+      "retentionRatio": 5,
+      "prewashOccupancy": 0.1421973779554263,
+      "postwash24hOccupancy": 0.11948654072959096,
+      "loadingFreeAuc_nMh": 2.17850318936337,
+      "postwashFreeAuc_nMh": 3.1159513503689342,
+      "wholeProtocolFreeAuc_nMh": 5.294454539732304,
+      "loadingOccupancyAuc_h": 1.5791867284432501,
+      "postwashOccupancyAuc_h": 2.7764016765137542,
+      "wholeProtocolOccupancyAuc_h": 4.355588404957004
+    },
+    {
+      "case": "higher-retention-q20",
+      "mechanism": "residual",
+      "retentionRatio": 0,
+      "prewashOccupancy": 0.47506214230680466,
+      "postwash24hOccupancy": 0.0807998411622398,
+      "loadingFreeAuc_nMh": 7.28608770459761,
+      "postwashFreeAuc_nMh": 2.0456470160798776,
+      "wholeProtocolFreeAuc_nMh": 9.331734720677488,
+      "loadingOccupancyAuc_h": 3.569561477011966,
+      "postwashOccupancyAuc_h": 2.2592414208102896,
+      "wholeProtocolOccupancyAuc_h": 5.828802897822255
+    },
+    {
+      "case": "higher-retention-q20",
+      "mechanism": "retention",
+      "retentionRatio": 20,
+      "prewashOccupancy": 0.045186294103093924,
+      "postwash24hOccupancy": 0.04304751813982368,
+      "loadingFreeAuc_nMh": 0.6751314747917627,
+      "postwashFreeAuc_nMh": 1.0657222881239279,
+      "wholeProtocolFreeAuc_nMh": 1.7408537629156906,
+      "loadingOccupancyAuc_h": 0.5699799454276505,
+      "postwashOccupancyAuc_h": 1.0224211476568486,
+      "wholeProtocolOccupancyAuc_h": 1.592401093084499
+    }
+  ],
+  "clampedCounterfactual": {
+    "doseMatched": false,
+    "prewashInventory_nMeq": 4.5940289291854715,
+    "postwash24hOccupancy": 0.370405781963959
+  }
+}
