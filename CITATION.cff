@@ -7,5 +7,6 @@ license: MIT
 repository-code: "https://github.com/dataRichinsightPoor/washout-check"
 url: "https://datarichinsightpoor.github.io/washout-check/"
 authors:
-  - name: "Data-Rich, Insight-Poor"
+  - family-names: "Damko"
+    given-names: "Ermelinda"
 abstract: "A research-use forward model of reversible target binding, explicit loading boundaries, medium exchange, residual exposure, and reversible drug retention. Synthetic scenarios expose assay-dependent persistence without estimating intrinsic residence time or therapeutic efficacy."
